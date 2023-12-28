@@ -3,7 +3,6 @@
     "info": {
         "contact": {}
     },
-    "basePath": "/api/v1",
     "paths": {
         "/solver": {
             "post": {
@@ -25,7 +24,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.SolverRequest"
+                            "$ref": "#/definitions/models.SolverRequest"
                         }
                     }
                 ],
@@ -44,7 +43,7 @@
         }
     },
     "definitions": {
-        "main.SolverRequest": {
+        "models.SolverRequest": {
             "type": "object",
             "properties": {
                 "absent": {

@@ -1,6 +1,5 @@
-basePath: /api/v1
 definitions:
-  main.SolverRequest:
+  models.SolverRequest:
     properties:
       absent:
         example:
@@ -38,7 +37,7 @@ paths:
         name: SolverRequest
         required: true
         schema:
-          $ref: '#/definitions/main.SolverRequest'
+          $ref: '#/definitions/models.SolverRequest'
       produces:
       - application/json
       responses:

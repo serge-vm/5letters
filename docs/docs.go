@@ -35,7 +35,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.SolverRequest"
+                            "$ref": "#/definitions/models.SolverRequest"
                         }
                     }
                 ],
@@ -54,7 +54,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "main.SolverRequest": {
+        "models.SolverRequest": {
             "type": "object",
             "properties": {
                 "absent": {
@@ -96,7 +96,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "",
 	Host:             "",
-	BasePath:         "/api/v1",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "",
 	Description:      "",
