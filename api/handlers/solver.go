@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/serge-vm/5letters/internal/models"
+	"github.com/serge-vm/5letters/internal/quizsolver"
 )
 
 // @BasePath /api/v1
@@ -23,6 +23,5 @@ import (
 func SolverHandler(g *gin.Context) {
 	var request models.SolverRequest
 	g.Bind(&request)
-	fmt.Println(request)
-	g.JSON(http.StatusOK, []string{"your_word_1", "your_word_2"})
+	g.JSON(http.StatusOK, quizsolver.Solve(request))
 }
