@@ -1,0 +1,53 @@
+definitions:
+  models.SolverRequest:
+    properties:
+      absent:
+        example:
+        - в
+        - г
+        items:
+          type: string
+        type: array
+      ordered:
+        additionalProperties:
+          type: string
+        example:
+          "3": о
+          "5": е
+        type: object
+      unordered:
+        example:
+        - а
+        - б
+        items:
+          type: string
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /solver:
+    post:
+      consumes:
+      - application/json
+      description: provide letter sets and get suitable variants
+      parameters:
+      - description: Existing letters
+        in: body
+        name: SolverRequest
+        required: true
+        schema:
+          $ref: '#/definitions/models.SolverRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of suitable words
+          schema:
+            items:
+              type: string
+            type: array
+      summary: 5 letters quiz solver
+      tags:
+      - solver
+swagger: "2.0"

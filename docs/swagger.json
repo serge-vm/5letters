@@ -1,0 +1,82 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/solver": {
+            "post": {
+                "description": "provide letter sets and get suitable variants",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "solver"
+                ],
+                "summary": "5 letters quiz solver",
+                "parameters": [
+                    {
+                        "description": "Existing letters",
+                        "name": "SolverRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.SolverRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of suitable words",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.SolverRequest": {
+            "type": "object",
+            "properties": {
+                "absent": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "в",
+                        "г"
+                    ]
+                },
+                "ordered": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "example": {
+                        "3": "о",
+                        "5": "е"
+                    }
+                },
+                "unordered": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "а",
+                        "б"
+                    ]
+                }
+            }
+        }
+    }
+}
