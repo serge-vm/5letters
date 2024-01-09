@@ -17,10 +17,11 @@ func consoleReadLetter(reader bufio.Reader) (string, bool) {
 		log.Println("Ошибка ввода: ", err)
 		return "", false
 	}
-	if len(strings.TrimSpace(letter)) == 0 {
+	clean := strings.TrimSpace(letter)
+	if len(clean) == 0 {
 		return "", false
 	}
-	return strings.Trim(letter, "\r\n"), true
+	return string([]rune(clean)[0]), true
 }
 
 func consoleReadPosition(reader bufio.Reader) (int, bool) {
