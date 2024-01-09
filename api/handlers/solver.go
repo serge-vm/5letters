@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/serge-vm/5letters/internal/models"
+	"github.com/serge-vm/5letters/api/models"
 	"github.com/serge-vm/5letters/internal/quizsolver"
 )
 
@@ -23,5 +23,5 @@ import (
 func SolverHandler(g *gin.Context) {
 	var request models.SolverRequest
 	g.Bind(&request)
-	g.JSON(http.StatusOK, quizsolver.Solve(request))
+	g.JSON(http.StatusOK, quizsolver.Solve(request.Unordered, request.Ordered, request.Absent))
 }

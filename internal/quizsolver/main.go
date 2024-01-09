@@ -6,10 +6,9 @@ import (
 	"strings"
 
 	"github.com/serge-vm/5letters/assets"
-	"github.com/serge-vm/5letters/internal/models"
 )
 
-func Solve(letters models.SolverRequest) []string {
+func Solve(unordered []string, ordered map[int]string, absent []string) []string {
 	suggestions := []string{}
 
 	file, err := assets.Assets.Open("russian5.txt")
@@ -23,15 +22,15 @@ func Solve(letters models.SolverRequest) []string {
 	for scanner.Scan() {
 		word5 := scanner.Text()
 
-		if !checkUnorderedLetters(word5, letters.Unordered) {
+		if !checkUnorderedLetters(word5, unordered) {
 			continue
 		}
 
-		if !checkOrderedLetters(word5, letters.Ordered) {
+		if !checkOrderedLetters(word5, ordered) {
 			continue
 		}
 
-		if !checkAbsentLetters(word5, letters.Absent) {
+		if !checkAbsentLetters(word5, absent) {
 			continue
 		}
 

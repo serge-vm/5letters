@@ -16,6 +16,6 @@ func main() {
 		v1.POST("/solver", handlers.SolverHandler)
 	}
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1)))
-	r.Run(":8080")
+	r.Run(":22080")
 
 }
