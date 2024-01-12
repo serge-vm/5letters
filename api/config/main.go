@@ -15,7 +15,7 @@ func NewAPIConfig() APIConfig {
 	var config APIConfig
 
 	hostParam := flag.String("host", "", "Host to listen on")
-	portParam := flag.Int("port", 22080, "Port to listen on")
+	portParam := flag.Int("port", 8080, "Port to listen on")
 	baseUrlParam := flag.String("base-url", "", "Base URL")
 	flag.Parse()
 
