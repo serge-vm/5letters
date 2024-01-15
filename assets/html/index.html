@@ -11,7 +11,49 @@
     <h1>5 букв</h1>
     <p>Помощник в решении</p>
     <div id="app">
-        {{ message }}
+        <h3>Шаг 1. Введите в игру одно или два слова, чтобы получить первые результаты:</h3>
+        <p>Пример: метро, санки</p>
+        <p>Пример: право, кисет</p>
+        <p>Либо придумайте свои слова. Желательно, чтобы они состояли из разных и часто встречающихся букв.</p>
+
+        <h3>Шаг 2. Введите полученные результаты.</h3>
+        <p>
+        <div style="float: left;">В слове есть буква:&nbsp;<span v-for="letter in unordered">{{ letter }}&nbsp;</span>
+        </div>
+        <form @submit.prevent="">
+            <input id="uletter" v-model="uletter" type="text" maxlength="1" size="1">
+            <button type="submit" @click="addUnordered">Добавить</button>
+            <button type="submit" @click="delUnordered">Удалить</button>
+        </form>
+        </p>
+        <p>
+        <div style="float: left;">В слове есть буква на позиции:&nbsp;
+            <span v-for="o in ordered">{{ o.position }}:{{ o.letter }}&nbsp;</span>
+        </div>
+        <form @submit.prevent="">
+            <input id="oposition" v-model="oposition" type="number" min="1" max="5" maxlength="1" size="2">
+            <input id="oletter" v-model="oletter" type="text" maxlength="1" size="1">
+            <button type="submit" @click="addOrdered">Добавить</button>
+            <button type="submit" @click="delOrdered">Удалить</button>
+        </form>
+        </p>
+        <p>
+        <div style="float: left;">В слове нет буквы:&nbsp;<span v-for="letter in absent">{{ letter }}&nbsp;</span></div>
+        <form @submit.prevent="">
+            <input id="aletter" v-model="aletter" type="text" maxlength="1" size="1">
+            <button type="submit" @click="addAbsent">Добавить</button>
+            <button type="submit" @click="delAbsent">Удалить</button>
+        </form>
+        </p>
+
+        <h3>Шаг 3. Получите список подходящих слов. Повторяйте шаги 2 и 3 по мере ввода в игру слов из рекомендаций.
+        </h3>
+        <p>
+        <form @submit.prevent="apiRecommend">
+            <button>Получить</button>
+        </form>
+        <p><span v-for="word in recommended">{{ word }}<br></span></p>
+        </p>
     </div>
 </body>
 <footer>
