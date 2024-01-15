@@ -20,7 +20,7 @@ func main() {
 
 	r.SetTrustedProxies([]string{"127.0.0.1"})
 
-	r.StaticFS("/static", http.FS(assets.Static))
+	r.StaticFS(config.BaseUrl+"/static", http.FS(assets.Static))
 
 	docs.SwaggerInfo.BasePath = config.BaseUrl + "/api/v1"
 
