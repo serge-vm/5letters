@@ -14,7 +14,7 @@ var app = new Vue({
         addUnordered() {
             const { uletter } = this
             if (uletter.length === 0) { return }
-            this.unordered.push(uletter)
+            this.unordered.push(uletter.toLowerCase())
             this.uletter = ''
         },
         delUnordered() {
@@ -23,7 +23,7 @@ var app = new Vue({
         addOrdered() {
             const { oletter, oposition } = this
             if (oletter.length === 0 || oposition < 1 || oposition > 5) { return }
-            this.ordered.push({ position: oposition, letter: oletter })
+            this.ordered.push({ position: oposition, letter: oletter.toLowerCase() })
             this.oletter = ''
             this.oposition = 1
         },
@@ -33,7 +33,7 @@ var app = new Vue({
         addAbsent() {
             const { aletter } = this
             if (aletter.length === 0) { return }
-            this.absent.push(aletter)
+            this.absent.push(aletter.toLowerCase())
             this.aletter = ''
         },
         delAbsent() {
