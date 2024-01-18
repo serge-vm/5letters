@@ -1,54 +1,82 @@
 var app = new Vue({
     el: '#app',
     data: {
-        unordered: [],
-        ordered: [],
-        absent: [],
-        uletter: '',
-        oletter: '',
-        oposition: 1,
-        aletter: '',
-        recommended: []
+        words: [],
+        recommended: [],
+        wordInput: ''
     },
     methods: {
-        addUnordered() {
-            const { uletter } = this
-            if (uletter.length === 0) { return }
-            this.unordered.push(uletter.toLowerCase())
-            this.uletter = ''
+        addWord() {
+            const { wordInput } = this
+            let newWord = []
+            if (wordInput.length !== 5) { return }
+            for (const letter of wordInput.toLowerCase()) { newWord.push({ letter: letter, color: this.newLetterColor(letter) }) }
+            this.words.push(newWord)
+            this.wordInput = ''
         },
-        delUnordered() {
-            this.unordered.pop()
+        delWord() {
+            this.words.pop()
         },
-        addOrdered() {
-            const { oletter, oposition } = this
-            if (oletter.length === 0 || oposition < 1 || oposition > 5) { return }
-            this.ordered.push({ position: oposition, letter: oletter.toLowerCase() })
-            this.oletter = ''
-            this.oposition = 1
+        newLetterColor(newLetter) {
+            color = "grey"
+            this.words.forEach(word => {
+                word.forEach(letter => {
+                    if (letter.letter == newLetter) {
+                        color = letter.color
+                    }
+                })
+            })
+            return color
         },
-        delOrdered() {
-            this.ordered.pop()
-        },
-        addAbsent() {
-            const { aletter } = this
-            if (aletter.length === 0) { return }
-            this.absent.push(aletter.toLowerCase())
-            this.aletter = ''
-        },
-        delAbsent() {
-            this.absent.pop()
+        letterClicked(event) {
+            coords = event.currentTarget.id.split("-")
+            currentLetter = this.words[coords[0]][coords[1]].letter
+            currentColor = this.words[coords[0]][coords[1]].color
+            targetColor = ""
+            if (currentColor == "grey") {
+                targetColor = "white"
+            }
+            if (currentColor == "white") {
+                targetColor = "yellow"
+            }
+            if (currentColor == "yellow") {
+                targetColor = "grey"
+            }
+            this.words[coords[0]][coords[1]].color = targetColor
+            this.words.forEach(word => {
+                word.forEach(letter => {
+                    if (letter.letter == currentLetter) {
+                        letter.color = targetColor
+                    }
+                })
+            })
         },
         apiRecommend() {
-            let ord = {};
-            this.ordered.forEach(el => {
-                ord[el.position] = el.letter
+            let unordered = []
+            let ordered = {}
+            let absent = []
+            let position = 0
+
+            this.words.forEach(word => {
+                position = 1
+                word.forEach(letter => {
+                    if (letter.color == "grey") {
+                        absent.push(letter.letter)
+                    }
+                    if (letter.color == "white") {
+                        unordered.push(letter.letter)
+                    }
+                    if (letter.color == "yellow") {
+                        ordered[position] = letter.letter
+                    }
+                    position += 1
+                })
             })
             this.recommended = ''
             const requestOptions = {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ unordered: this.unordered, ordered: ord, absent: this.absent })
+                body: JSON.stringify({ unordered: unordered, ordered: ordered, absent: absent })
             }
             fetch("api/v1/solver", requestOptions)
                 .then(response => response.json())
