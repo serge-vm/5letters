@@ -10,23 +10,12 @@ var app = new Vue({
             const { wordInput } = this
             let newWord = []
             if (wordInput.length !== 5) { return }
-            for (const letter of wordInput.toLowerCase()) { newWord.push({ letter: letter, color: this.newLetterColor(letter) }) }
+            for (const letter of wordInput.toLowerCase()) { newWord.push({ letter: letter, color: "grey" }) }
             this.words.push(newWord)
             this.wordInput = ''
         },
         delWord() {
             this.words.pop()
-        },
-        newLetterColor(newLetter) {
-            color = "grey"
-            this.words.forEach(word => {
-                word.forEach(letter => {
-                    if (letter.letter == newLetter) {
-                        color = letter.color
-                    }
-                })
-            })
-            return color
         },
         letterClicked(event) {
             coords = event.currentTarget.id.split("-")
@@ -43,13 +32,6 @@ var app = new Vue({
                 targetColor = "grey"
             }
             this.words[coords[0]][coords[1]].color = targetColor
-            this.words.forEach(word => {
-                word.forEach(letter => {
-                    if (letter.letter == currentLetter) {
-                        letter.color = targetColor
-                    }
-                })
-            })
         },
         apiRecommend() {
             let unordered = []
