@@ -1,11 +1,13 @@
 package main
 
 import (
+	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/serge-vm/5letters/api/config"
 	"github.com/serge-vm/5letters/api/handlers"
+	"github.com/serge-vm/5letters/assets"
 	"github.com/serge-vm/5letters/docs"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -15,8 +17,14 @@ func main() {
 	config := config.NewAPIConfig()
 
 	r := gin.Default()
+
 	r.SetTrustedProxies([]string{"127.0.0.1"})
+
+	r.StaticFS(config.BaseUrl+"/static", http.FS(assets.Static))
+
 	docs.SwaggerInfo.BasePath = config.BaseUrl + "/api/v1"
+
+	r.GET(config.BaseUrl+"/", handlers.IndexHandler)
 	v1 := r.Group(config.BaseUrl + "/api/v1")
 	{
 		v1.POST("/solver", handlers.SolverHandler)

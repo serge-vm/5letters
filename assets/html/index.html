@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 letters</title>
+    <style>
+        html {
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .container .letter {
+            flex: 1 0 33%;
+            /* height: 20px; */
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid black;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>5 букв</h1>
+    <p>Помощник в решении</p>
+    <div id="app">
+        <h3>Шаг 1. Введите в игру одно или два слова, чтобы получить первые результаты:</h3>
+        <p>Пример: метро, санки</p>
+        <p>Пример: право, кисет</p>
+        <p>Либо придумайте свои слова. Желательно, чтобы они состояли из разных и часто встречающихся букв.</p>
+
+        <h3>Шаг 2. Введите слова, которые вы добавили и раскрасьте их кликами мыши.</h3>
+        <p>Серый цвет - буквы в слове нет, белый цвет - буква есть, но позиция неизвестна, желтый - буква на своем
+            месте.</p>
+        <p>
+        <div style="float: left;">Добавлено слово:&nbsp;</div>
+        <form @submit.prevent="">
+            <input id="wordInput" v-model="wordInput" type="text" minlength="5" maxlength="5" size="5">
+            <button type="submit" @click="addWord">Добавить</button>
+            <button type="submit" @click="delWord">Удалить</button>
+        </form>
+        </p>
+        <p>
+        <div v-for="(word, idx) in words" class="container">
+            <div v-for="(letter, position) in word" class="container">
+                <div :id="idx+'-'+position" :style="{backgroundColor : letter.color}" class="letter"
+                    @click="letterClicked">
+                    {{
+                    letter.letter.toUpperCase() }}
+                </div>
+            </div>
+        </div>
+        </p>
+        <h3>Шаг 3. Получите список подходящих слов. Повторяйте шаги 2 и 3 по мере ввода в игру слов из рекомендаций.
+        </h3>
+        <p>
+        <form @submit.prevent="apiRecommend">
+            <button>Получить</button>
+        </form>
+        <p><span v-for="word in recommended">{{ word }}<br></span></p>
+        </p>
+    </div>
+</body>
+<footer>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="static/js/5letters.js"></script>
+</footer>
+
+</html>
