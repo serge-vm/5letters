@@ -5,10 +5,10 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/serge-vm/5letters/api/config"
-	"github.com/serge-vm/5letters/api/handlers"
 	"github.com/serge-vm/5letters/assets"
 	"github.com/serge-vm/5letters/docs"
+	"github.com/serge-vm/5letters/internal/config"
+	"github.com/serge-vm/5letters/internal/handlers"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
