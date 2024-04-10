@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/serge-vm/5letters/api/models"
-	"github.com/serge-vm/5letters/internal/quizsolver"
+	"github.com/serge-vm/5letters/internal/models"
+	"github.com/serge-vm/5letters/pkg/quizsolver"
 )
 
 // @BasePath /api/v1
