@@ -78,14 +78,14 @@ const docTemplate = `{
                     }
                 },
                 "unordered": {
-                    "type": "array",
-                    "items": {
+                    "type": "object",
+                    "additionalProperties": {
                         "type": "string"
                     },
-                    "example": [
-                        "а",
-                        "б"
-                    ]
+                    "example": {
+                        "1": "а",
+                        "2": "а"
+                    }
                 }
             }
         }
