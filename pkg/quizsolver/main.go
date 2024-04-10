@@ -42,14 +42,19 @@ func Solve(unordered map[int]string, ordered map[int]string, absent []string) []
 }
 
 func checkUnorderedLetters(word string, unorderedLetters map[int]string) bool {
+	found := true
 	runes5 := []rune(word)
 	for p, l := range unorderedLetters {
+		if !strings.Contains(word, l) {
+			found = false
+			break
+		}
 		rl := []rune(l)
 		if runes5[p-1] == rl[0] {
 			return false
 		}
 	}
-	return true
+	return found
 }
 
 func checkOrderedLetters(word string, orderedLetters map[int]string) bool {
