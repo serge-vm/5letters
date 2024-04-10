@@ -8,7 +8,7 @@ import (
 	"github.com/serge-vm/5letters/assets"
 )
 
-func Solve(unordered []string, ordered map[int]string, absent []string) []string {
+func Solve(unordered map[int]string, ordered map[int]string, absent []string) []string {
 	suggestions := []string{}
 
 	file, err := assets.Assets.Open("russian5.txt")
@@ -41,18 +41,20 @@ func Solve(unordered []string, ordered map[int]string, absent []string) []string
 	return suggestions
 }
 
-func checkUnorderedLetters(word string, unorderedLetters []string) bool {
-	for _, l := range unorderedLetters {
-		if !strings.Contains(word, l) {
+func checkUnorderedLetters(word string, unorderedLetters map[int]string) bool {
+	runes5 := []rune(word)
+	for p, l := range unorderedLetters {
+		rl := []rune(l)
+		if runes5[p-1] == rl[0] {
 			return false
 		}
 	}
 	return true
 }
 
-func checkOrderedLetters(word string, orderedLettes map[int]string) bool {
+func checkOrderedLetters(word string, orderedLetters map[int]string) bool {
 	runes5 := []rune(word)
-	for p, l := range orderedLettes {
+	for p, l := range orderedLetters {
 		rl := []rune(l)
 		if runes5[p-1] != rl[0] {
 			return false

@@ -16,12 +16,12 @@ definitions:
           "5": е
         type: object
       unordered:
-        example:
-        - а
-        - б
-        items:
+        additionalProperties:
           type: string
-        type: array
+        example:
+          "1": а
+          "2": а
+        type: object
     type: object
 info:
   contact: {}
