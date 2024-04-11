@@ -34,7 +34,7 @@ var app = new Vue({
             this.words[coords[0]][coords[1]].color = targetColor
         },
         apiRecommend() {
-            let unordered = {}
+            let unordered = []
             let ordered = {}
             let absent = []
             let position = 0
@@ -46,7 +46,7 @@ var app = new Vue({
                         absent.push(letter.letter)
                     }
                     if (letter.color == "white") {
-                        unordered[position] = (letter.letter)
+                        unordered.push({ "p": position, "l": letter.letter })
                     }
                     if (letter.color == "yellow") {
                         ordered[position] = letter.letter

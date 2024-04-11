@@ -6,9 +6,10 @@ import (
 	"strings"
 
 	"github.com/serge-vm/5letters/assets"
+	"github.com/serge-vm/5letters/internal/models"
 )
 
-func Solve(unordered map[int]string, ordered map[int]string, absent []string) []string {
+func Solve(unordered []models.Unordered, ordered map[int]string, absent []string) []string {
 	suggestions := []string{}
 
 	file, err := assets.Assets.Open("russian5.txt")
@@ -41,16 +42,16 @@ func Solve(unordered map[int]string, ordered map[int]string, absent []string) []
 	return suggestions
 }
 
-func checkUnorderedLetters(word string, unorderedLetters map[int]string) bool {
+func checkUnorderedLetters(word string, unorderedLetters []models.Unordered) bool {
 	found := true
 	runes5 := []rune(word)
-	for p, l := range unorderedLetters {
-		if !strings.Contains(word, l) {
+	for _, l := range unorderedLetters {
+		if !strings.Contains(word, string(l.L)) {
 			found = false
 			break
 		}
-		rl := []rune(l)
-		if runes5[p-1] == rl[0] {
+		rl := []rune(l.L)
+		if runes5[l.P-1] == rl[0] {
 			return false
 		}
 	}
