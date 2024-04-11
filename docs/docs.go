@@ -89,10 +89,12 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "l": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "а"
                 },
                 "p": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 }
             }
         }

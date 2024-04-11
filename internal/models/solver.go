@@ -1,8 +1,8 @@
 package models
 
 type Unordered struct {
-	P int
-	L string
+	P int    `example:"1"`
+	L string `example:"а"`
 }
 
 type SolverRequest struct {

@@ -23,8 +23,10 @@ definitions:
   models.Unordered:
     properties:
       l:
+        example: а
         type: string
       p:
+        example: 1
         type: integer
     type: object
 info:
