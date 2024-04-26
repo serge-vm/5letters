@@ -80,12 +80,21 @@ const docTemplate = `{
                 "unordered": {
                     "type": "array",
                     "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "а",
-                        "б"
-                    ]
+                        "$ref": "#/definitions/models.Unordered"
+                    }
+                }
+            }
+        },
+        "models.Unordered": {
+            "type": "object",
+            "properties": {
+                "l": {
+                    "type": "string",
+                    "example": "а"
+                },
+                "p": {
+                    "type": "integer",
+                    "example": 1
                 }
             }
         }
