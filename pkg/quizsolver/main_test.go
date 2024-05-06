@@ -66,70 +66,70 @@ func TestSolverFindNoMetro(t *testing.T) {
 
 func TestUnorderedLetterFound(t *testing.T) {
 	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "e"})
-	result := checkUnorderedLetters("tests", unorderedLetters)
+	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "е"})
+	result := checkUnorderedLetters("тесто", unorderedLetters)
 	if result == false {
-		t.Fatal("Letter e is present in word tests and not first. Misdetection.")
+		t.Fatal("Letter е is present in word тесто and not first. Misdetection.")
 	}
 }
 
 func TestUnorderedLetterExclude(t *testing.T) {
 	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 2, L: "e"})
-	result := checkUnorderedLetters("tests", unorderedLetters)
+	unorderedLetters = append(unorderedLetters, models.Unordered{P: 2, L: "е"})
+	result := checkUnorderedLetters("тесто", unorderedLetters)
 	if result == true {
-		t.Fatal("Letter e is present in word tests and position is right. Misdetection.")
+		t.Fatal("Letter е is present in word тесто and position is right. Misdetection.")
 	}
 
 }
 
 func TestUnorderedLetterAbsent(t *testing.T) {
 	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "a"})
-	result := checkUnorderedLetters("tests", unorderedLetters)
+	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "а"})
+	result := checkUnorderedLetters("тесто", unorderedLetters)
 	if result == true {
-		t.Fatal("Letter a is absent in word tests. Misdetection.")
+		t.Fatal("Letter в is absent in word тесто. Misdetection.")
 	}
 
 }
 
 func TestOrderedLetterFound(t *testing.T) {
 	letters := make(map[int]string)
-	letters[2] = "e"
-	result := checkOrderedLetters("tests", letters)
+	letters[2] = "е"
+	result := checkOrderedLetters("тесто", letters)
 	if result == false {
-		t.Fatal("Letter e not found in word tests on position 2, but it should.")
+		t.Fatal("Letter е not found in word тесто on position 2, but it should.")
 	}
 }
 
 func TestOrderedLetterWrongPosition(t *testing.T) {
 	letters := make(map[int]string)
-	letters[1] = "e"
-	result := checkOrderedLetters("tests", letters)
+	letters[1] = "е"
+	result := checkOrderedLetters("тесто", letters)
 	if result == true {
-		t.Fatal("Letter e found in word tests on position 1, but it shouldn't.")
+		t.Fatal("Letter е found in word тесто on position 1, but it shouldn't.")
 	}
 }
 
 func TestOrderedLetterNoLetter(t *testing.T) {
 	letters := make(map[int]string)
-	letters[1] = "a"
-	result := checkOrderedLetters("tests", letters)
+	letters[1] = "ы"
+	result := checkOrderedLetters("тесто", letters)
 	if result == true {
-		t.Fatal("Letter a found in word tests on position 1, but it shouldn't.")
+		t.Fatal("Letter ы found in word тесто on position 1, but it shouldn't.")
 	}
 }
 
 func TestAbsentLettersAbsent(t *testing.T) {
-	result := checkAbsentLetters("tests", []string{"a"})
+	result := checkAbsentLetters("тесто", []string{"а"})
 	if result == false {
-		t.Fatal("Letter a found in word tests, but it shouldn't.")
+		t.Fatal("Letter а found in word тесто, but it shouldn't.")
 	}
 }
 
 func TestAbsentLettersPresent(t *testing.T) {
-	result := checkAbsentLetters("test", []string{"e"})
+	result := checkAbsentLetters("тесто", []string{"е"})
 	if result == true {
-		t.Fatal("Letter e not found in word tests, but it should.")
+		t.Fatal("Letter е not found in word тесто, but it should.")
 	}
 }
