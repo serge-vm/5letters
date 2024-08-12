@@ -4,132 +4,172 @@ import (
 	"testing"
 
 	"github.com/serge-vm/5letters/internal/models"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestSolverFindGrass(t *testing.T) {
-	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "а"})
-	letters := make(map[int]string)
-	letters[4] = "в"
-	letters[1] = "т"
-	result := Solve(unorderedLetters, letters, []string{"ю"})
-	for _, r := range result {
-		if r == "трава" {
-			return
-		}
+func TestSolver(t *testing.T) {
+	testCases := []struct {
+		name       string
+		unordered  []models.Unordered
+		ordered    map[int]string
+		absent     []string
+		targetWord string
+		found      bool
+	}{
+		{
+			name: "Трава present",
+			unordered: []models.Unordered{
+				{P: 1, L: "а"},
+			},
+			ordered:    map[int]string{1: "т", 4: "в"},
+			absent:     []string{"ю"},
+			targetWord: "трава",
+			found:      true,
+		},
+		{
+			name: "Трава absent",
+			unordered: []models.Unordered{
+				{P: 3, L: "а"},
+			},
+			ordered:    map[int]string{1: "т", 4: "в"},
+			absent:     []string{"ю"},
+			targetWord: "трава",
+			found:      false,
+		},
+		{
+			name: "Метро present",
+			unordered: []models.Unordered{
+				{P: 1, L: "о"},
+			},
+			ordered:    map[int]string{1: "м", 3: "т"},
+			absent:     []string{"к"},
+			targetWord: "метро",
+			found:      true,
+		},
+		{
+			name: "Метро absent",
+			unordered: []models.Unordered{
+				{P: 1, L: "о"},
+			},
+			ordered:    map[int]string{1: "м", 3: "т"},
+			absent:     []string{"р"},
+			targetWord: "метро",
+			found:      false,
+		},
 	}
-	t.Fatal("Word трава not found, but it should be.")
-}
 
-func TestSolverFindNoGrass(t *testing.T) {
-	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 3, L: "а"})
-	letters := make(map[int]string)
-	letters[4] = "в"
-	letters[1] = "т"
-	result := Solve(unorderedLetters, letters, []string{"ю"})
-	for _, r := range result {
-		if r == "трава" {
-			t.Fatal("Word трава found, but it shouldn't be.")
-		}
-	}
-}
-
-func TestSolverFindMetro(t *testing.T) {
-	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "о"})
-	letters := make(map[int]string)
-	letters[3] = "т"
-	letters[1] = "м"
-	result := Solve(unorderedLetters, letters, []string{"к"})
-	for _, r := range result {
-		if r == "метро" {
-			return
-		}
-	}
-	t.Fatal("Word метро not found, but it should be.")
-}
-
-func TestSolverFindNoMetro(t *testing.T) {
-	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "о"})
-	letters := make(map[int]string)
-	letters[3] = "т"
-	letters[1] = "м"
-	result := Solve(unorderedLetters, letters, []string{"р"})
-	for _, r := range result {
-		if r == "метро" {
-			t.Fatal("Word метро found, but it shouldn't be.")
-		}
-	}
-}
-
-func TestUnorderedLetterFound(t *testing.T) {
-	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "е"})
-	result := checkUnorderedLetters("тесто", unorderedLetters)
-	if result == false {
-		t.Fatal("Letter е is present in word тесто and not first. Misdetection.")
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			var found bool
+			result := Solve(tt.unordered, tt.ordered, tt.absent)
+			for _, r := range result {
+				if r == tt.targetWord {
+					found = true
+				}
+			}
+			assert.Equal(t, tt.found, found)
+		})
 	}
 }
 
-func TestUnorderedLetterExclude(t *testing.T) {
-	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 2, L: "е"})
-	result := checkUnorderedLetters("тесто", unorderedLetters)
-	if result == true {
-		t.Fatal("Letter е is present in word тесто and position is right. Misdetection.")
+func TestUnordered(t *testing.T) {
+	testCases := []struct {
+		name      string
+		unordered []models.Unordered
+		checkWord string
+		found     bool
+	}{
+		{
+			name: "е not 1 in тесто",
+			unordered: []models.Unordered{
+				{P: 1, L: "е"},
+			},
+			checkWord: "тесто",
+			found:     true,
+		},
+		{
+			name: "е 2 in тесто",
+			unordered: []models.Unordered{
+				{P: 2, L: "е"},
+			},
+			checkWord: "тесто",
+			found:     false,
+		},
+		{
+			name: "a 1 in тесто",
+			unordered: []models.Unordered{
+				{P: 1, L: "а"},
+			},
+			checkWord: "тесто",
+			found:     false,
+		},
 	}
 
-}
-
-func TestUnorderedLetterAbsent(t *testing.T) {
-	var unorderedLetters []models.Unordered
-	unorderedLetters = append(unorderedLetters, models.Unordered{P: 1, L: "а"})
-	result := checkUnorderedLetters("тесто", unorderedLetters)
-	if result == true {
-		t.Fatal("Letter в is absent in word тесто. Misdetection.")
-	}
-
-}
-
-func TestOrderedLetterFound(t *testing.T) {
-	letters := make(map[int]string)
-	letters[2] = "е"
-	result := checkOrderedLetters("тесто", letters)
-	if result == false {
-		t.Fatal("Letter е not found in word тесто on position 2, but it should.")
-	}
-}
-
-func TestOrderedLetterWrongPosition(t *testing.T) {
-	letters := make(map[int]string)
-	letters[1] = "е"
-	result := checkOrderedLetters("тесто", letters)
-	if result == true {
-		t.Fatal("Letter е found in word тесто on position 1, but it shouldn't.")
-	}
-}
-
-func TestOrderedLetterNoLetter(t *testing.T) {
-	letters := make(map[int]string)
-	letters[1] = "ы"
-	result := checkOrderedLetters("тесто", letters)
-	if result == true {
-		t.Fatal("Letter ы found in word тесто on position 1, but it shouldn't.")
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.found, checkUnorderedLetters(tt.checkWord, tt.unordered))
+		})
 	}
 }
 
-func TestAbsentLettersAbsent(t *testing.T) {
-	result := checkAbsentLetters("тесто", []string{"а"})
-	if result == false {
-		t.Fatal("Letter а found in word тесто, but it shouldn't.")
+func TestOrdered(t *testing.T) {
+	testCases := []struct {
+		name      string
+		ordered   map[int]string
+		checkWord string
+		found     bool
+	}{
+		{
+			name:      "е 2 in тесто",
+			ordered:   map[int]string{2: "е"},
+			checkWord: "тесто",
+			found:     true,
+		},
+		{
+			name:      "е 1 in тесто",
+			ordered:   map[int]string{1: "е"},
+			checkWord: "тесто",
+			found:     false,
+		},
+		{
+			name:      "ы 1 in тесто",
+			ordered:   map[int]string{1: "ы"},
+			checkWord: "тесто",
+			found:     false,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.found, checkOrderedLetters(tt.checkWord, tt.ordered))
+		})
 	}
 }
 
-func TestAbsentLettersPresent(t *testing.T) {
-	result := checkAbsentLetters("тесто", []string{"е"})
-	if result == true {
-		t.Fatal("Letter е not found in word тесто, but it should.")
+func TestAbsent(t *testing.T) {
+	testCases := []struct {
+		name      string
+		absent    []string
+		checkWord string
+		found     bool
+	}{
+		{
+			name:      "а not in тесто",
+			absent:    []string{"a"},
+			checkWord: "тесто",
+			found:     false,
+		},
+		{
+			name:      "е in тесто",
+			absent:    []string{"е"},
+			checkWord: "тесто",
+			found:     true,
+		},
+	}
+
+	for _, tt := range testCases {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, !tt.found, checkAbsentLetters(tt.checkWord, tt.absent))
+		})
 	}
 }
